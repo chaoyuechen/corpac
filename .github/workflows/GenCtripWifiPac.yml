@@ -1,0 +1,26 @@
+name: Gen Ctrip Wifi Pac
+on: 
+    push:
+        branches: [master]
+        
+    workflow_dispatch:
+        
+jobs:
+    generate_pac:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Setup Python
+              uses: actions/setup-python@v2
+              with: 
+                    python-version: '3.7'
+                    architecture: x64
+                    
+            - name: Generate pac file
+              run: |
+                pip install -U genpac
+                genpac --format=pac --pac-proxy="HTTP mobileproxy.cn1.global.ctrip.com:8080" --pac-compress > corp.pac
+            
+            - name: Archive pac file
+              uses: actions/upload-artifact@v3
+              with:
+                  path: corp.pac
