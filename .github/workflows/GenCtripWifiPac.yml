@@ -32,7 +32,8 @@ jobs:
                 cp -rf corp.pac gitee_pac/
                 cd gitee_pac
                 git checkout master
-                git commit * -m 'Update corp.pac $(date +"%Y-%m-%d %H:%M")'
+                now=$(date +"%Y-%m-%d %H:%M")
+                git commit * -m "Update corp.pac $now"
                 git push origin master:master
             
             - name: Archive pac file
