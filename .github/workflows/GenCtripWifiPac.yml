@@ -26,6 +26,8 @@ jobs:
             - name: Commit to Gitee
               run: |
                 sudo ln -sf ./Shanghai /etc/localtime
+                git config --global user.email "action@github.com"
+                git config --global user.name "Github Action"
                 git clone https://chaoyuechen:${{ secrets.GITEE_PAC_TOKEN }}@gitee.com/chaoyuechen/pac.git gitee_pac
                 cp -rf corp.pac gitee_pac/
                 cd gitee_pac
