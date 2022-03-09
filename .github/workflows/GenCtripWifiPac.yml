@@ -9,6 +9,9 @@ jobs:
     generate_pac:
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
             - name: Setup Python
               uses: actions/setup-python@v2
               with: 
@@ -19,6 +22,16 @@ jobs:
               run: |
                 pip install -U genpac
                 genpac --format=pac --pac-proxy="HTTP mobileproxy.cn1.global.ctrip.com:8080" --pac-compress > corp.pac
+                
+            - name: Commit to Gitee
+              run: |
+                sudo ln -sf ./Shanghai /etc/localtime
+                git clone https://chaoyuechen:${{ secrets.GITEE_PAC_TOKEN }}@gitee.com/chaoyuechen/pac.git gitee_pac
+                cp -rf corp.pac gitee_pac/
+                cd gitee_pac
+                git checkout master
+                git commit * -m 'Update corp.pac $(date +"%Y-%m-%d %H:%M")'
+                git push origin master:master
             
             - name: Archive pac file
               uses: actions/upload-artifact@v3
